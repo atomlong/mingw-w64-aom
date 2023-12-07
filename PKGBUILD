@@ -3,7 +3,7 @@
 # Contributor: Chocobo1 <chocobo1 AT archlinux DOT net>
 
 pkgname=mingw-w64-aom
-pkgver=3.7.1
+pkgver=3.8.0
 pkgrel=1
 pkgdesc="Alliance for Open Media video codec (mingw-w64)"
 url="https://aomedia.org/"
@@ -30,7 +30,7 @@ source=(
   https://storage.googleapis.com/aom-releases/libaom-$pkgver.tar.gz{,.asc}
   "cmake.patch"
 )
-b2sums=('a5bc8aaa538353fa405520fc096459d0009348c590dc585377e53971df252bac0b5bea40b6483c8be54caa7a0e8fccd761c5b3ec0db4144becec3cc12a91a5e9'
+b2sums=('276e50c134a5a5925591cbc5c76a11383d288854bc5f4db79d97f1e4e41e74f5739ee916df127112cb678673f09aeb5dfa91f1d8696b0894923837cea991bd73'
         'SKIP'
         '627c000cc5b152e78714898156ebebb2524749bd1d701bbbdca0b431301426c2f821403299a6fd4420be80133d4e7178dea8b2f4aae2ab34e9e81e584ebda345')
 validpgpkeys=(
@@ -48,8 +48,8 @@ build() {
   for _arch in ${_architectures}; do
     mkdir -p "${srcdir}/libaom-$pkgver"/build-static-${_arch} && cd "${srcdir}/libaom-$pkgver"/build-static-${_arch}
     ${_arch}-cmake -G Ninja \
-      -DBUILD_SHARED_LIBS=0 \
-      -DENABLE_TESTS=0 \
+      -D BUILD_SHARED_LIBS=0 \
+      -D ENABLE_TESTS=0 \
       ..
     cmake --build .
   done
@@ -57,8 +57,8 @@ build() {
   for _arch in ${_architectures}; do
     mkdir -p "${srcdir}/libaom-$pkgver"/build-${_arch} && cd "${srcdir}/libaom-$pkgver"/build-${_arch}
     ${_arch}-cmake -G Ninja \
-      -DBUILD_SHARED_LIBS=1 \
-      -DENABLE_TESTS=0 \
+      -D BUILD_SHARED_LIBS=1 \
+      -D ENABLE_TESTS=0 \
       ..
     cmake --build .
   done
