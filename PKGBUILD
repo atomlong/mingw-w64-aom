@@ -3,15 +3,12 @@
 # Contributor: Chocobo1 <chocobo1 AT archlinux DOT net>
 
 pkgname=mingw-w64-aom
-pkgver=3.8.0
+pkgver=3.8.1
 pkgrel=1
 pkgdesc="Alliance for Open Media video codec (mingw-w64)"
 url="https://aomedia.org/"
 arch=('any')
-license=(
-  BSD
-  custom:PATENTS
-)
+license=(BSD-3-Clause)
 depends=(
   mingw-w64-crt
 )
@@ -30,7 +27,7 @@ source=(
   https://storage.googleapis.com/aom-releases/libaom-$pkgver.tar.gz{,.asc}
   "cmake.patch"
 )
-b2sums=('276e50c134a5a5925591cbc5c76a11383d288854bc5f4db79d97f1e4e41e74f5739ee916df127112cb678673f09aeb5dfa91f1d8696b0894923837cea991bd73'
+b2sums=('fec3123f8ee68b1027a1a2019969c098b730da72be2902274659b983857f2d8f62dae5b563543b3f144ae8bc51b6d6fdd4fcd6aadf2ca04d5a4dd5be987fbbac'
         'SKIP'
         '627c000cc5b152e78714898156ebebb2524749bd1d701bbbdca0b431301426c2f821403299a6fd4420be80133d4e7178dea8b2f4aae2ab34e9e81e584ebda345')
 validpgpkeys=(
@@ -48,6 +45,7 @@ build() {
   for _arch in ${_architectures}; do
     mkdir -p "${srcdir}/libaom-$pkgver"/build-static-${_arch} && cd "${srcdir}/libaom-$pkgver"/build-static-${_arch}
     ${_arch}-cmake -G Ninja \
+      -D CMAKE_BUILD_TYPE=Release \
       -D BUILD_SHARED_LIBS=0 \
       -D ENABLE_TESTS=0 \
       ..
@@ -57,6 +55,7 @@ build() {
   for _arch in ${_architectures}; do
     mkdir -p "${srcdir}/libaom-$pkgver"/build-${_arch} && cd "${srcdir}/libaom-$pkgver"/build-${_arch}
     ${_arch}-cmake -G Ninja \
+      -D CMAKE_BUILD_TYPE=Release \
       -D BUILD_SHARED_LIBS=1 \
       -D ENABLE_TESTS=0 \
       ..
