@@ -3,7 +3,7 @@
 # Contributor: Chocobo1 <chocobo1 AT archlinux DOT net>
 
 pkgname=mingw-w64-aom
-pkgver=3.9.0
+pkgver=3.9.1
 pkgrel=1
 pkgdesc="Alliance for Open Media video codec (mingw-w64)"
 url="https://aomedia.org/"
@@ -27,7 +27,7 @@ source=(
   https://storage.googleapis.com/aom-releases/libaom-$pkgver.tar.gz{,.asc}
   "cmake.patch"
 )
-b2sums=('4c68b58f6a8e347ee912e309a030804c4a3cc99714e2aaf127add63222df3056c7cf4b6c50f4861557b0892739035149b5e002e25272882eff55cde5d9b745b7'
+b2sums=('2f983a4a563e16120aa8937e059f4cd267fb60b6d4148f952f1e664a50b84bc0d8ba7629231b60e4263963d97559a819752a4fa0dcf2427c9f94036716221324'
         'SKIP'
         '627c000cc5b152e78714898156ebebb2524749bd1d701bbbdca0b431301426c2f821403299a6fd4420be80133d4e7178dea8b2f4aae2ab34e9e81e584ebda345')
 validpgpkeys=(
@@ -42,6 +42,11 @@ prepare() {
 }
 
 build() {
+
+  # upstream wants this off
+  CFLAGS="${CFLAGS/_FORTIFY_SOURCE=3/_FORTIFY_SOURCE=0}"
+  CXXFLAGS="${CXXFLAGS/_FORTIFY_SOURCE=3/_FORTIFY_SOURCE=0}"
+
   for _arch in ${_architectures}; do
     mkdir -p "${srcdir}/libaom-$pkgver"/build-static-${_arch} && cd "${srcdir}/libaom-$pkgver"/build-static-${_arch}
     ${_arch}-cmake -G Ninja \
